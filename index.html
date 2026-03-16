@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhavna | A Celestial Tribute</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&family=Pinyon+Script&family=Montserrat:wght@100;200;400&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #c5a059; --pink: #ff4d6d; --bg: #030305; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; }
+
+        /* Welcome Screen */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 9999; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #enter-btn {
+            padding: 18px 45px; border: 1px solid var(--gold); background: transparent;
+            color: var(--gold); font-family: 'Playfair Display'; font-size: 1rem;
+            letter-spacing: 6px; cursor: pointer; transition: 0.5s; text-transform: uppercase;
+        }
+        #enter-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3); }
+
+        canvas { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; }
+        
+        .main-container {
+            position: relative; z-index: 10; height: 100vh; display: flex;
+            flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; opacity: 0; transition: 2.5s ease-out;
+        }
+
+        .sub-text { font-family: 'Playfair Display', serif; font-size: 0.8rem; letter-spacing: 10px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; opacity: 0.7; }
+        .hero-title { font-family: 'Pinyon Script', cursive; font-size: clamp(5rem, 15vw, 11rem); color: var(--pink); text-shadow: 0 0 40px rgba(255, 77, 109, 0.3); margin: -20px 0; }
+
+        .romantic-box {
+            max-width: 600px; font-weight: 200; font-style: italic; line-height: 2;
+            padding: 30px; margin: 20px 0; font-size: 1.05rem;
+            background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.05), transparent);
+        }
+
+        /* Minimalist Professional Cake */
+        .cake-area { position: relative; margin-top: 50px; cursor: pointer; width: 100px; height: 100px; }
+        .cake-svg { width: 80px; fill: var(--gold); opacity: 0.8; transition: 0.3s; }
+        .cake-area:hover .cake-svg { transform: scale(1.1); opacity: 1; }
+
+        .candle-stick {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 4px; height: 25px; background: linear-gradient(to bottom, #fff, var(--gold));
+            border-radius: 2px;
+        }
+
+        .flame {
+            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+            width: 15px; height: 28px; background: radial-gradient(#fff, #ff9d00, #ff4d00);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 20px #ff9d00, 0 0 40px #ff4d00;
+            animation: flicker 0.15s infinite alternate;
+        }
+
+        @keyframes flicker { 0% { transform: translateX(-50%) scale(1) rotate(-2deg); } 100% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 0.8; } }
+        
+        #wish-notif { display: none; font-family: 'Pinyon Script'; font-size: 4rem; color: #fff; margin-top: 25px; text-shadow: 0 0 20px var(--gold); animation: fadeInUp 2s forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        #music-indicator { position: fixed; bottom: 40px; right: 40px; width: 30px; height: 30px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--gold); cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div id="overlay">
+        <button id="enter-btn" onclick="startExperience()">Explore the Magic</button>
+    </div>
+
+    <canvas id="canvas-bg"></canvas>
+
+    <div class="main-container" id="main">
+        <p class="sub-text">A Celebration of Soul</p>
+        <h1 class="hero-title">Bhavna</h1>
+        
+        <div class="romantic-box">
+            "In the quiet elegance of the universe, you are the most radiant star. Bhavna, your presence is a melody that my heart constantly hums. Today, we celebrate the light you carry within. Happy Birthday, my eternal love."
+        </div>
+
+        <div class="cake-area" id="cake-trigger">
+            <div class="candle-stick"></div>
+            <div class="flame" id="flame"></div>
+            <svg class="cake-svg" viewBox="0 0 512 512"><path d="M416 192H96c-17.67 0-32 14.33-32 32v128h384V224c0-17.67-14.33-32-32-32zm-160 96c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32z"/></svg>
+        </div>
+        <div id="wish-notif">Make a Wish, Bhavuuuuu ❤️</div>
+    </div>
+
+    <audio id="bg-audio" loop><source src="aud.mp3" type="audio/mpeg"></audio>
+    <div id="music-indicator" onclick="toggleAudio()">ON</div>
+
+    <script>
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let width, height, candleBlown = false;
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', init);
+        init();
+
+        class Particle {
+            constructor(isBlast = false) {
+                this.isBlast = isBlast;
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = height + (Math.random() * 200);
+                this.size = Math.random() * (this.isBlast ? 5 : 2) + 1;
+                this.speed = Math.random() * (this.isBlast ? 4 : 1) + 0.5;
+                this.opacity = Math.random() * 0.6 + 0.1;
+                this.color = Math.random() > 0.5 ? '#ff4d6d' : '#c5a059';
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < -50) this.reset();
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                // Draw refined heart
+                const x = this.x, y = this.y, s = this.size;
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.bezierCurveTo(x, y-s, x-s*1.5, y-s, x-s*1.5, y);
+                ctx.bezierCurveTo(x-s*1.5, y+s*1.5, x, y+s*2, x, y+s*3);
+                ctx.bezierCurveTo(x, y+s*2, x+s*1.5, y+s*1.5, x+s*1.5, y);
+                ctx.bezierCurveTo(x+s*1.5, y-s, x, y-s, x, y);
+                ctx.fill();
+            }
+        }
+
+        for(let i=0; i<80; i++) particles.push(new Particle(false));
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+
+        function startExperience() {
+            document.getElementById('overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('main').style.opacity = '1';
+                document.getElementById('bg-audio').play();
+                animate();
+                startMic();
+            }, 1000);
+        }
+
+        function triggerBlast() {
+            candleBlown = true;
+            document.getElementById('flame').style.display = 'none';
+            document.getElementById('wish-notif').style.display = 'block';
+            for(let i=0; i<300; i++) {
+                setTimeout(() => particles.push(new Particle(true)), i * 5);
+            }
+        }
+
+        async function startMic() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioCtx = new AudioContext();
+                const source = audioCtx.createMediaStreamSource(stream);
+                const analyzer = audioCtx.createAnalyser();
+                analyzer.fftSize = 256;
+                source.connect(analyzer);
+                const data = new Uint8Array(analyzer.frequencyBinCount);
+
+                function check() {
+                    if (candleBlown) return;
+                    analyzer.getByteFrequencyData(data);
+                    let avg = data.reduce((a, b) => a + b) / data.length;
+                    if (avg > 60) triggerBlast();
+                    requestAnimationFrame(check);
+                }
+                check();
+            } catch (e) { console.log("Mic error"); }
+        }
+
+        function toggleAudio() {
+            const a = document.getElementById('bg-audio');
+            const i = document.getElementById('music-indicator');
+            if(a.paused) { a.play(); i.innerText = "ON"; }
+            else { a.pause(); i.innerText = "OFF"; }
+        }
+    </script>
+</body>
+</html>
