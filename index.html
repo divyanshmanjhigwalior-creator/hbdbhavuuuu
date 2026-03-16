@@ -3,123 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhavna | A Celestial Tribute</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,700&family=Pinyon+Script&family=Montserrat:wght@100;200;400&display=swap" rel="stylesheet">
+    <title>For My Dearest Bhavna 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Montserrat:wght@200;400&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #c5a059; --pink: #ff4d6d; --bg: #030305; }
+        :root { --romantic-pink: #ff85a1; --gold: #f9d976; --dark-velvet: #0a0a0a; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; }
+        body { background: var(--dark-velvet); color: #fff; font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh; }
 
-        /* Welcome Screen */
-        #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg); z-index: 9999; display: flex;
-            flex-direction: column; align-items: center; justify-content: center;
-            transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Start Screen */
+        #loader {
+            position: fixed; inset: 0; background: #000; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        #enter-btn {
-            padding: 18px 45px; border: 1px solid var(--gold); background: transparent;
-            color: var(--gold); font-family: 'Playfair Display'; font-size: 1rem;
-            letter-spacing: 6px; cursor: pointer; transition: 0.5s; text-transform: uppercase;
+        #start-btn {
+            padding: 18px 45px; border-radius: 50px; border: 1px solid var(--romantic-pink);
+            background: transparent; color: var(--romantic-pink); font-size: 1.1rem;
+            cursor: pointer; transition: 0.5s; font-family: 'Montserrat', sans-serif;
+            letter-spacing: 4px; text-transform: uppercase;
         }
-        #enter-btn:hover { background: var(--gold); color: #000; box-shadow: 0 0 40px rgba(197, 160, 89, 0.3); }
+        #start-btn:hover { background: var(--romantic-pink); color: #000; box-shadow: 0 0 30px var(--romantic-pink); }
 
-        canvas { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; }
+        canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
         
-        .main-container {
+        .content {
             position: relative; z-index: 10; height: 100vh; display: flex;
             flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; opacity: 0; transition: 2.5s ease-out;
+            text-align: center; opacity: 0; transition: 2.5s ease; padding: 30px;
         }
 
-        .sub-text { font-family: 'Playfair Display', serif; font-size: 0.8rem; letter-spacing: 10px; color: var(--gold); text-transform: uppercase; margin-bottom: 15px; opacity: 0.7; }
-        .hero-title { font-family: 'Pinyon Script', cursive; font-size: clamp(5rem, 15vw, 11rem); color: var(--pink); text-shadow: 0 0 40px rgba(255, 77, 109, 0.3); margin: -20px 0; }
-
-        .romantic-box {
-            max-width: 600px; font-weight: 200; font-style: italic; line-height: 2;
-            padding: 30px; margin: 20px 0; font-size: 1.05rem;
-            background: linear-gradient(to right, transparent, rgba(197, 160, 89, 0.05), transparent);
+        .bhavna-name { 
+            font-family: 'Great Vibes', cursive; font-size: clamp(5rem, 15vw, 8rem); 
+            color: var(--romantic-pink); text-shadow: 0 0 30px rgba(255,133,161,0.4); 
+            margin-bottom: -10px;
         }
-
-        /* Minimalist Professional Cake */
-        .cake-area { position: relative; margin-top: 50px; cursor: pointer; width: 100px; height: 100px; }
-        .cake-svg { width: 80px; fill: var(--gold); opacity: 0.8; transition: 0.3s; }
-        .cake-area:hover .cake-svg { transform: scale(1.1); opacity: 1; }
-
-        .candle-stick {
-            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
-            width: 4px; height: 25px; background: linear-gradient(to bottom, #fff, var(--gold));
-            border-radius: 2px;
-        }
-
-        .flame {
-            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
-            width: 15px; height: 28px; background: radial-gradient(#fff, #ff9d00, #ff4d00);
-            border-radius: 50% 50% 20% 20%;
-            box-shadow: 0 0 20px #ff9d00, 0 0 40px #ff4d00;
-            animation: flicker 0.15s infinite alternate;
-        }
-
-        @keyframes flicker { 0% { transform: translateX(-50%) scale(1) rotate(-2deg); } 100% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 0.8; } }
         
-        #wish-notif { display: none; font-family: 'Pinyon Script'; font-size: 4rem; color: #fff; margin-top: 25px; text-shadow: 0 0 20px var(--gold); animation: fadeInUp 2s forwards; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .romantic-para {
+            max-width: 650px; font-size: 1.15rem; line-height: 1.9; color: #f0f0f0;
+            margin: 25px 0; font-style: italic; font-weight: 200;
+            letter-spacing: 0.5px;
+        }
 
-        #music-indicator { position: fixed; bottom: 40px; right: 40px; width: 30px; height: 30px; border: 1px solid var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: var(--gold); cursor: pointer; }
+        /* Interactive Cake Area */
+        .cake-section { position: relative; margin-top: 40px; cursor: pointer; }
+        .cake-emoji { font-size: 90px; filter: drop-shadow(0 0 15px rgba(255,255,255,0.2)); }
+        
+        .flame {
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 28px; background: radial-gradient(#fff, #ffcc00, #ff6600);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 25px #ffcc00, 0 0 45px #ff4400;
+            animation: flicker 0.1s infinite alternate;
+        }
+        @keyframes flicker { 
+            0% { transform: translateX(-50%) scale(1) rotate(-1deg); opacity: 0.9; } 
+            100% { transform: translateX(-50%) scale(1.15) rotate(1deg); opacity: 1; } 
+        }
+        
+        #wish-message { 
+            display: none; font-family: 'Dancing Script'; font-size: 3.5rem; 
+            color: var(--gold); margin-top: 25px; text-shadow: 0 0 15px var(--gold);
+            animation: slideUp 1.5s ease-out;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        #music-note { position: fixed; bottom: 40px; right: 40px; font-size: 1.5rem; opacity: 0.4; z-index: 100; }
     </style>
 </head>
 <body>
 
-    <div id="overlay">
-        <button id="enter-btn" onclick="startExperience()">Explore the Magic</button>
+    <div id="loader">
+        <button id="start-btn" onclick="igniteMagic()">Enter Your Surprise, Bhavna</button>
     </div>
 
-    <canvas id="canvas-bg"></canvas>
+    <canvas id="visuals"></canvas>
 
-    <div class="main-container" id="main">
-        <p class="sub-text">A Celebration of Soul</p>
-        <h1 class="hero-title">Bhavna</h1>
+    <div class="content" id="main-content">
+        <h1 class="bhavna-name">Bhavna</h1>
         
-        <div class="romantic-box">
-            "In the quiet elegance of the universe, you are the most radiant star. Bhavna, your presence is a melody that my heart constantly hums. Today, we celebrate the light you carry within. Happy Birthday, my eternal love."
+        <div class="romantic-para">
+            "Dearest Bhavna, you are the most beautiful piece of art I have ever witnessed. In the gallery of my life, you are the masterpiece that takes my breath away every single day. You aren't just my girlfriend; you are my peace, my home, and my favorite mystery. On this special day, I want you to know that as long as I breathe, my heart will only beat for you. Happy Birthday to the girl who changed my world forever." 💖✨
         </div>
 
-        <div class="cake-area" id="cake-trigger">
-            <div class="candle-stick"></div>
-            <div class="flame" id="flame"></div>
-            <svg class="cake-svg" viewBox="0 0 512 512"><path d="M416 192H96c-17.67 0-32 14.33-32 32v128h384V224c0-17.67-14.33-32-32-32zm-160 96c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32z"/></svg>
+        <div class="cake-section">
+            <div class="flame" id="flame-element"></div>
+            <div class="cake-emoji">🎂</div>
         </div>
-        <div id="wish-notif">Make a Wish, Bhavuuuuu ❤️</div>
+        <div id="wish-message">Make a Wish, My Love! 💌</div>
     </div>
 
-    <audio id="bg-audio" loop><source src="aud.mp3" type="audio/mpeg"></audio>
-    <div id="music-indicator" onclick="toggleAudio()">ON</div>
+    <audio id="romantic-audio" loop><source src="aud.mp3" type="audio/mpeg"></audio>
+    <div id="music-note">🎶</div>
 
     <script>
-        const canvas = document.getElementById('canvas-bg');
+        const canvas = document.getElementById('visuals');
         const ctx = canvas.getContext('2d');
         let particles = [];
-        let width, height, candleBlown = false;
+        let magicStarted = false;
+        let isBlown = false;
 
-        function init() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+        function igniteMagic() {
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('main-content').style.opacity = '1';
+                document.getElementById('romantic-audio').play();
+                initParticles();
+                startMic();
+                magicStarted = true;
+            }, 1200);
         }
-        window.addEventListener('resize', init);
-        init();
 
-        class Particle {
-            constructor(isBlast = false) {
-                this.isBlast = isBlast;
+        class Heart {
+            constructor(isExplosion = false) {
+                this.isExplosion = isExplosion;
                 this.reset();
             }
             reset() {
-                this.x = Math.random() * width;
-                this.y = height + (Math.random() * 200);
-                this.size = Math.random() * (this.isBlast ? 5 : 2) + 1;
-                this.speed = Math.random() * (this.isBlast ? 4 : 1) + 0.5;
-                this.opacity = Math.random() * 0.6 + 0.1;
-                this.color = Math.random() > 0.5 ? '#ff4d6d' : '#c5a059';
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 500;
+                this.size = Math.random() * (this.isExplosion ? 25 : 12) + 5;
+                this.speed = Math.random() * (this.isExplosion ? 6 : 1.5) + 0.5;
+                this.opacity = Math.random() * 0.7 + 0.2;
+                this.color = Math.random() > 0.3 ? '#ff85a1' : '#ffffff';
             }
             update() {
                 this.y -= this.speed;
@@ -128,72 +134,63 @@
             draw() {
                 ctx.globalAlpha = this.opacity;
                 ctx.fillStyle = this.color;
-                // Draw refined heart
-                const x = this.x, y = this.y, s = this.size;
-                ctx.beginPath();
-                ctx.moveTo(x, y);
-                ctx.bezierCurveTo(x, y-s, x-s*1.5, y-s, x-s*1.5, y);
-                ctx.bezierCurveTo(x-s*1.5, y+s*1.5, x, y+s*2, x, y+s*3);
-                ctx.bezierCurveTo(x, y+s*2, x+s*1.5, y+s*1.5, x+s*1.5, y);
-                ctx.bezierCurveTo(x+s*1.5, y-s, x, y-s, x, y);
-                ctx.fill();
+                ctx.font = `${this.size}px Arial`;
+                ctx.fillText('❤️', this.x, this.y);
             }
         }
 
-        for(let i=0; i<80; i++) particles.push(new Particle(false));
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-
-        function startExperience() {
-            document.getElementById('overlay').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('overlay').style.display = 'none';
-                document.getElementById('main').style.opacity = '1';
-                document.getElementById('bg-audio').play();
-                animate();
-                startMic();
-            }, 1000);
-        }
-
-        function triggerBlast() {
-            candleBlown = true;
-            document.getElementById('flame').style.display = 'none';
-            document.getElementById('wish-notif').style.display = 'block';
-            for(let i=0; i<300; i++) {
-                setTimeout(() => particles.push(new Particle(true)), i * 5);
+        function initParticles() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i=0; i<60; i++) particles.push(new Heart(false));
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
             }
+            animate();
         }
 
         async function startMic() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const audioCtx = new AudioContext();
-                const source = audioCtx.createMediaStreamSource(stream);
-                const analyzer = audioCtx.createAnalyser();
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const analyzer = audioContext.createAnalyser();
+                const source = audioContext.createMediaStreamSource(stream);
                 analyzer.fftSize = 256;
                 source.connect(analyzer);
-                const data = new Uint8Array(analyzer.frequencyBinCount);
+                const dataArray = new Uint8Array(analyzer.frequencyBinCount);
 
-                function check() {
-                    if (candleBlown) return;
-                    analyzer.getByteFrequencyData(data);
-                    let avg = data.reduce((a, b) => a + b) / data.length;
-                    if (avg > 60) triggerBlast();
-                    requestAnimationFrame(check);
+                function detectBlow() {
+                    if (isBlown) return;
+                    analyzer.getByteFrequencyData(dataArray);
+                    let sum = dataArray.reduce((a, b) => a + b);
+                    let average = sum / dataArray.length;
+
+                    // High sensitivity for blowing (adjusted to 50)
+                    if (average > 50) {
+                        isBlown = true;
+                        document.getElementById('flame-element').style.display = 'none';
+                        document.getElementById('wish-message').style.display = 'block';
+                        // Explosion of 250+ hearts
+                        for(let i=0; i<250; i++) particles.push(new Heart(true));
+                    }
+                    requestAnimationFrame(detectBlow);
                 }
-                check();
-            } catch (e) { console.log("Mic error"); }
-        }
-
-        function toggleAudio() {
-            const a = document.getElementById('bg-audio');
-            const i = document.getElementById('music-indicator');
-            if(a.paused) { a.play(); i.innerText = "ON"; }
-            else { a.pause(); i.innerText = "OFF"; }
+                detectBlow();
+            } catch (err) {
+                console.log("Mic blocked by browser. Ask her to click the cake instead!");
+                // Backup: Click the cake to blow candle
+                document.querySelector('.cake-section').onclick = () => {
+                    if(!isBlown) {
+                        isBlown = true;
+                        document.getElementById('flame-element').style.display = 'none';
+                        document.getElementById('wish-message').style.display = 'block';
+                        for(let i=0; i<250; i++) particles.push(new Heart(true));
+                    }
+                }
+            }
         }
     </script>
 </body>
